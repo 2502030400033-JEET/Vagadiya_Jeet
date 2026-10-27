@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple AI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+    }
+
+    .chat {
+      width: 350px;
+      padding: 20px;
+      background: #1e293b;
+      border-radius: 15px;
+    }
+
+    #messages {
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 68%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .bot { color: #38bdf8; }
+    .user { color: #86efac; }
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <h2>My Simple AI 🤖</h2>
+    <div id="messages">
+      <p class="bot">AI: Hello! Ask me something.</p>
+    </div>
+
+    <input id="input" placeholder="Type a message..."
+           onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    function getAIResponse(message) {
+      const text = message.toLowerCase();
+
+      if (text.includes("hello") || text.includes("hi"))
+        return "Hello! How can I help you?";
+
+      if (text.includes("your name"))
+        return "I am Mini AI, your simple chatbot.";
+
+      if (text.includes("how are you"))
+        return "I'm doing great! Thanks for asking.";
+
+      if (text.includes("your age"))
+        return "I'm an AI, so I don't have a human age.";
+
+      if (text.includes("time"))
+        return "Current time: " + new Date().toLocaleTimeString();
+
+      if (text.includes("date"))
+        return "Today's date: " + new Date().toLocaleDateString();
+
+      if (text.includes("help"))
+        return "Try asking about my name, the time, or say hello.";
+
+      if (text.includes("bye"))
+        return "Goodbye! Have a great day.";
+
+      return "I'm still learning. Try asking me something else!";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      messages.innerHTML +=
+        `<p class="user">You: ${escapeHTML(message)}</p>`;
+
+      const reply = getAIResponse(message);
+      messages.innerHTML +=
+        `<p class="bot">AI: ${escapeHTML(reply)}</p>`;
+
+      input.value = "";
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHTML(text) {
+      return text.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+  </script>
+</body>
+</html>
